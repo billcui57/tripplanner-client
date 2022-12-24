@@ -23,7 +23,3 @@ export interface IPlanTripResponse {
 }
 
 
-export const IPlanTripResponseAdapter = (json: any): IPlanTripResponse => {
-  return camelizeKeys(json) as IPlanTripResponse
-}
-
