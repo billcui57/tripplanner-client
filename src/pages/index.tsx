@@ -9,6 +9,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
+import { IPlanTripResponse } from "../api/plantrip";
 
 export default function Home() {
   const [sites, setSites] = useState<string[]>([]);
@@ -19,10 +20,15 @@ export default function Home() {
   };
 
   const fetchData = async () => {
-    return axios.post("/api/plan-trip", {
-      sites: sites,
-      max_driving_hours: 2,
-    });
+    return axios
+      .post<IPlanTripResponse>("/api/plan-trip", {
+        sites: sites,
+        max_driving_hours: 2,
+        hotel_finding_radius: 40,
+      })
+      .then((res) => {
+        return res.data;
+      });
   };
 
   const { isLoading, isSuccess, data, error, refetch } = useQuery(
