@@ -7,11 +7,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 import GoogleMapReact from "google-map-react";
-import {
-  IPlanTripResponse,
-  IPlanTripResponseAdapter,
-} from "../../api/plantrip";
+import { IPlanTripResponse } from "../../api/plantrip";
 import { Circle } from "@mui/icons-material";
+import { Pin } from "../../components/Pin/Pin";
 
 export default function ResultPage() {
   const queryClient = useQueryClient();
@@ -20,16 +18,15 @@ export default function ResultPage() {
 
   const renderHotels = () => {
     const hotelMarkers = tripData?.day_drive_with_hotels
-      .map((dayDrive) => {
-        return dayDrive.hotel_geocodes.map((hotelGeocode) => {
+      .map((dayDrive, i) => {
+        return dayDrive.hotel_geocodes.map((hotelGeocode, j) => {
           return (
-            <Circle
+            <Pin
               lat={hotelGeocode.latitude}
               lng={hotelGeocode.longitude}
-              color="yellow"
-            >
-              hello
-            </Circle>
+              color="secondary"
+              key={`hotel-marker-day-drive-${i}-hotel-${j}`}
+            />
           );
         });
       })
@@ -37,19 +34,18 @@ export default function ResultPage() {
     return hotelMarkers;
   };
 
-  // const renderSites = () => {
-  //   return tripData?.sites.map((site) => {
-  //     return (
-  //       <Circle
-  //         lat={hotelGeocode.latitude}
-  //         lng={hotelGeocode.longitude}
-  //         color="blue"
-  //       >
-  //         {site}
-  //       </Circle>
-  //     );
-  //   });
-  // };
+  const renderSites = () => {
+    return tripData?.sites.map((site, i) => {
+      return (
+        <Pin
+          lat={site.location.latitude}
+          lng={site.location.longitude}
+          color="primary"
+          key={`site-marker-${i}`}
+        />
+      );
+    });
+  };
 
   console.log({ cached: tripData });
 
@@ -64,7 +60,7 @@ export default function ResultPage() {
         defaultZoom={23}
       >
         {renderHotels()}
-        {/* {renderSites()} */}
+        {renderSites()}
       </GoogleMapReact>
     </div>
   );

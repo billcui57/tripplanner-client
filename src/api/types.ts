@@ -5,5 +5,5 @@ export interface IGeoCode {
 }
 
 export interface ISite {
-  name: string | undefined;
+  location: IGeoCode
 }

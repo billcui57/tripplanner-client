@@ -21,7 +21,7 @@ export interface IPlanTripRequest {
 
 export interface IPlanTripResponse {
   day_drive_with_hotels: IDayDriveWithHotel[];
-  sites: string[]
+  sites: ISite[]
 }
 
 export default async function planTrip(planTripRequest: IPlanTripRequest) {

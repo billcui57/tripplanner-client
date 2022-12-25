@@ -27,11 +27,6 @@ export const SiteListCreator: React.FC<IProps> = ({ onChange, sites }) => {
     onChange(_sites);
   };
 
-  const handleSiteAdd = () => {
-    const _sites = cloneDeep(sites);
-    _sites.push({ name: undefined, geoCode: undefined } as ISite);
-    onChange(_sites);
-  };
   const renderSiteList = () => {
     return sites.map((site, index) => {
       return (
@@ -51,9 +46,6 @@ export const SiteListCreator: React.FC<IProps> = ({ onChange, sites }) => {
     <>
       <Typography variant="h4">Sites</Typography>
       {renderSiteList()}
-      <IconButton aria-label="delete" color="primary" onClick={handleSiteAdd}>
-        <AddIcon />
-      </IconButton>
     </>
   );
 };

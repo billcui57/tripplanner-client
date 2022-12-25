@@ -10,8 +10,8 @@ import { useQuery } from "react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import planTrip, { IPlanTripRequest, IPlanTripResponse } from "../api/plantrip";
-import { siteNameToLatLng } from "../api/googleMaps";
 import { ISite } from "../api/types";
+import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteListCreatorv2";
 
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;
@@ -42,44 +42,25 @@ export default function Home() {
       hotel_finding_radius: 40,
     };
     refetch();
-    // Promise.all(
-    //   sites.map((site) => {
-    //     return siteNameToLatLng(site.name);
-    //   })
-    // )
-    //   .then((results) => {
-    //     const sitesWithGeocodes = results.map((result, i) => {
-    //       return { name: sites[i].name, geoCode: result } as ISiteWithGeoCode;
-    //     });
-    //     planTripRequest = {
-    //       sites: sitesWithGeocodes,
-    //       max_driving_hours: 6,
-    //       hotel_finding_radius: 40,
-    //     } as IPlanTripRequest;
-
-    //     refetch();
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //   });
   };
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
         <Stack spacing={2} alignItems="center">
-          <SiteListCreator onChange={handleSiteListChange} sites={sites} />
+          <Typography variant="h4">Constraints</Typography>
+          <LoadingButton loading={isLoading} onClick={handleSubmitButtonClick}>
+            Submit
+          </LoadingButton>
         </Stack>
       </Grid>
       <Grid item xs={6}>
         <Stack spacing={2} alignItems="center">
-          <Typography variant="h4">Constraints</Typography>
+          <SiteListCreatorV2
+            onChange={handleSiteListChange}
+            sites={sites}
+          ></SiteListCreatorV2>
         </Stack>
-      </Grid>
-      <Grid item xs={12} style={{ textAlign: "center" }}>
-        <LoadingButton loading={isLoading} onClick={handleSubmitButtonClick}>
-          Submit
-        </LoadingButton>
       </Grid>
     </Grid>
   );
