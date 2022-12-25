@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { cloneDeep } from "lodash";
 import * as React from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { ISite } from "../../../pages";
+import { ISite } from "../../../api/types";
 
 interface IProps {
   onChange: (newSiteList: ISite[]) => void;

@@ -9,22 +9,9 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
-import { IGeoCode, IPlanTripResponse } from "../api/plantrip";
+import planTrip, { IPlanTripRequest, IPlanTripResponse } from "../api/plantrip";
 import { siteNameToLatLng } from "../api/googleMaps";
-
-export interface ISite {
-  name: string | undefined;
-}
-
-// interface ISiteWithGeoCode extends ISite {
-//   geoCode: IGeoCode | undefined;
-// }
-
-export interface IPlanTripRequest {
-  sites: ISite[];
-  max_driving_hours: number;
-  hotel_finding_radius: number;
-}
+import { ISite } from "../api/types";
 
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;
@@ -36,24 +23,17 @@ export default function Home() {
   };
 
   const fetchData = async () => {
-    return axios
-      .post<IPlanTripResponse>("/api/plan-trip", planTripRequest)
-      .then((res) => {
-        return res.data;
-      });
+    if (planTripRequest) {
+      return planTrip(planTripRequest);
+    }
   };
 
-  const { isLoading, isSuccess, data, error, refetch } = useQuery(
-    "plan-trip",
-    fetchData,
-    {
-      enabled: false,
-    }
-  );
-
-  if (isSuccess) {
-    router.push("/result");
-  }
+  const { isLoading, data, error, refetch } = useQuery("plan-trip", fetchData, {
+    enabled: false,
+    onSuccess: () => {
+      router.push("/result");
+    },
+  });
 
   const handleSubmitButtonClick = () => {
     planTripRequest = {
