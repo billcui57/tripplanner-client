@@ -10,23 +10,34 @@ import GoogleMapReact from "google-map-react";
 import { IPlanTripResponse } from "../../api/plantrip";
 import { Circle } from "@mui/icons-material";
 import { Pin } from "../../components/Pin/Pin";
+import HotelIcon from "@mui/icons-material/Hotel";
+import { useRouter } from "next/router";
 
 export default function ResultPage() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const tripData = queryClient.getQueryData<IPlanTripResponse>("plan-trip");
 
+  if (!tripData) {
+    typeof window !== "undefined" && router.push("/");
+    return null;
+  }
+
   const renderHotels = () => {
-    const hotelMarkers = tripData?.day_drive_with_hotels
+    const hotelMarkers = tripData.day_drive_with_hotels
       .map((dayDrive, i) => {
         return dayDrive.hotel_geocodes.map((hotelGeocode, j) => {
           return (
             <Pin
               lat={hotelGeocode.latitude}
               lng={hotelGeocode.longitude}
-              color="secondary"
+              color="green"
               key={`hotel-marker-day-drive-${i}-hotel-${j}`}
-            />
+            >
+              {i + 1}
+              <HotelIcon fontSize="small" />
+            </Pin>
           );
         });
       })
@@ -35,29 +46,29 @@ export default function ResultPage() {
   };
 
   const renderSites = () => {
-    return tripData?.sites.map((site, i) => {
+    return tripData.sites.map((site, i) => {
       return (
         <Pin
           lat={site.location.latitude}
           lng={site.location.longitude}
-          color="primary"
+          color="pink"
           key={`site-marker-${i}`}
-        />
+        >
+          {i + 1}
+        </Pin>
       );
     });
   };
-
-  console.log({ cached: tripData });
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY! }}
         defaultCenter={{
-          lat: 44.1236349,
-          lng: -79.3715556,
+          lat: tripData?.sites[0].location.latitude,
+          lng: tripData?.sites[0].location.longitude,
         }}
-        defaultZoom={23}
+        defaultZoom={5}
       >
         {renderHotels()}
         {renderSites()}

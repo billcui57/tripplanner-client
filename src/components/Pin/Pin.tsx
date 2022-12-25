@@ -1,22 +1,16 @@
-import { Circle } from "@mui/icons-material";
+import PlaceIcon from "@mui/icons-material/Place";
+import { Avatar, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import { Stack } from "@mui/system";
 import * as React from "react";
+import { green, pink } from "@mui/material/colors";
 
 interface IProps {
   lat: number;
   lng: number;
-  color:
-    | "disabled"
-    | "action"
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "error"
-    | "info"
-    | "success"
-    | "warning"
-    | undefined;
+  color?: "pink" | "green";
   onClick?: () => void;
+  children?: any;
 }
 
 export const Pin: React.FC<IProps> = (props: IProps) => {
@@ -28,6 +22,16 @@ export const Pin: React.FC<IProps> = (props: IProps) => {
     }
   };
 
+  const getColour = () => {
+    if (props.color === "pink") {
+      return pink[500];
+    } else if (props.color === "green") {
+      return green[500];
+    } else {
+      return pink[500];
+    }
+  };
+
   return (
     <Box
       sx={{ transform: "translateX(-10px) translateY(-50%)" }}
@@ -35,7 +39,9 @@ export const Pin: React.FC<IProps> = (props: IProps) => {
       lng={props.longitude}
       onClick={handleClick}
     >
-      <Circle color={props.color}></Circle>
+      <Avatar sx={{ bgcolor: getColour(), width: 36, height: 36 }}>
+        {props.children}
+      </Avatar>
     </Box>
   );
 };

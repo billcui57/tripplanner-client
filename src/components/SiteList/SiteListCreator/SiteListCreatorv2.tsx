@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ISite } from "../../../api/types";
 import { Pin } from "../../Pin/Pin";
 import { cloneDeep } from "lodash";
+import PlaceIcon from "@mui/icons-material/Place";
 
 interface IProps {
   onChange: (newSiteList: ISite[]) => void;
@@ -22,12 +23,14 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
     return sites.map((site, index) => {
       return (
         <Pin
-          color="secondary"
+          color="pink"
           lat={site.location.latitude}
           lng={site.location.longitude}
           key={`site-${index}`}
           onClick={() => handleSiteClick(index)}
-        ></Pin>
+        >
+          {index + 1}
+        </Pin>
       );
     });
   };
@@ -40,8 +43,10 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
       <Pin
         lat={curSite.location.latitude}
         lng={curSite.location.longitude}
-        color="primary"
-      ></Pin>
+        color="green"
+      >
+        <PlaceIcon />
+      </Pin>
     );
   };
 
@@ -84,7 +89,7 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
           lat: 44.1236349,
           lng: -79.3715556,
         }}
-        defaultZoom={23}
+        defaultZoom={5}
         onClick={handleMapClick}
       >
         {renderCurSite()}

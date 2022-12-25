@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import { Button, Typography } from "@mui/material";
+import { Alert, Button, Slider, Typography } from "@mui/material";
 import { SiteListCreator } from "../components/SiteList/SiteListCreator/SiteListCreator";
 import { useState } from "react";
 import axios from "axios";
@@ -16,6 +16,9 @@ import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteLi
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;
   const [sites, setSites] = useState<ISite[]>([]);
+  const [maxDrivingHours, setMaxDrivingHours] = useState<number>(2);
+  const [hotelFindingRadius, setHotelFindingRadius] = useState<number>(20);
+
   const router = useRouter();
 
   const handleSiteListChange = (newSiteList: ISite[]) => {
@@ -30,6 +33,7 @@ export default function Home() {
 
   const { isLoading, data, error, refetch } = useQuery("plan-trip", fetchData, {
     enabled: false,
+    retry: false,
     onSuccess: () => {
       router.push("/result");
     },
@@ -38,29 +42,90 @@ export default function Home() {
   const handleSubmitButtonClick = () => {
     planTripRequest = {
       sites: sites,
-      max_driving_hours: 6,
-      hotel_finding_radius: 40,
+      max_driving_hours: maxDrivingHours,
+      hotel_finding_radius: hotelFindingRadius,
     };
     refetch();
   };
 
+  const handleMaxDrivingHoursChange = (
+    event: React.SyntheticEvent | Event,
+    value: number | Array<number>
+  ) => {
+    setMaxDrivingHours(value as number);
+  };
+
+  const handleHotelFindingRadiusChange = (
+    event: React.SyntheticEvent | Event,
+    value: number | Array<number>
+  ) => {
+    setHotelFindingRadius(value as number);
+  };
+
+  const canSubmit = () => {
+    return sites.length >= 2;
+  };
+
+  console.log(error);
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Stack spacing={2} alignItems="center">
-          <Typography variant="h4">Constraints</Typography>
-          <LoadingButton loading={isLoading} onClick={handleSubmitButtonClick}>
-            Submit
-          </LoadingButton>
+        <Stack paddingX={24}>
+          <Typography
+            variant="h4"
+            textAlign={"center"}
+            marginBottom={24}
+            marginTop={8}
+          >
+            Your Trip
+          </Typography>
+          {error ? (
+            <Alert severity="error">{error.response.data.error}</Alert>
+          ) : null}
+
+          <Box>
+            <Typography variant="body1" textAlign={"center"}>
+              Max hours of driving per day
+            </Typography>
+            <Slider
+              defaultValue={maxDrivingHours}
+              step={1}
+              min={1}
+              max={8}
+              marks
+              valueLabelDisplay="on"
+              onChangeCommitted={handleMaxDrivingHoursChange}
+            />
+          </Box>
+          <Box marginBottom={16}>
+            <Typography variant="body1" textAlign={"center"}>
+              Hotel finding radius
+            </Typography>
+            <Slider
+              defaultValue={hotelFindingRadius}
+              step={1}
+              min={1}
+              max={50}
+              valueLabelDisplay="on"
+              onChangeCommitted={handleHotelFindingRadiusChange}
+            />
+          </Box>
+          <Box textAlign="center">
+            <LoadingButton
+              loading={isLoading}
+              onClick={handleSubmitButtonClick}
+              disabled={!canSubmit()}
+            >
+              Submit
+            </LoadingButton>
+          </Box>
         </Stack>
       </Grid>
       <Grid item xs={6}>
-        <Stack spacing={2} alignItems="center">
-          <SiteListCreatorV2
-            onChange={handleSiteListChange}
-            sites={sites}
-          ></SiteListCreatorV2>
-        </Stack>
+        <SiteListCreatorV2
+          onChange={handleSiteListChange}
+          sites={sites}
+        ></SiteListCreatorV2>
       </Grid>
     </Grid>
   );
