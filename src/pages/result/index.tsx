@@ -12,67 +12,30 @@ import { Circle } from "@mui/icons-material";
 import { Pin } from "../../components/Pin/Pin";
 import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
+import { ResultMap } from "../../components/ResultMap/ResultMap";
+import { planTripResponseMock } from "../../api/mock";
+import { ResultList } from "../../components/ResultList/ResultList";
 
 export default function ResultPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const tripData = queryClient.getQueryData<IPlanTripResponse>("plan-trip");
+  // const tripData = queryClient.getQueryData<IPlanTripResponse>("plan-trip");
+  const tripData = planTripResponseMock;
 
   if (!tripData) {
     typeof window !== "undefined" && router.push("/");
     return null;
   }
 
-  const renderHotels = () => {
-    const hotelMarkers = tripData.day_drive_with_hotels
-      .map((dayDrive, i) => {
-        return dayDrive.hotel_geocodes.map((hotelGeocode, j) => {
-          return (
-            <Pin
-              lat={hotelGeocode.latitude}
-              lng={hotelGeocode.longitude}
-              color="green"
-              key={`hotel-marker-day-drive-${i}-hotel-${j}`}
-            >
-              {i + 1}
-              <HotelIcon fontSize="small" />
-            </Pin>
-          );
-        });
-      })
-      .flat();
-    return hotelMarkers;
-  };
-
-  const renderSites = () => {
-    return tripData.sites.map((site, i) => {
-      return (
-        <Pin
-          lat={site.location.latitude}
-          lng={site.location.longitude}
-          color="pink"
-          key={`site-marker-${i}`}
-        >
-          {i + 1}
-        </Pin>
-      );
-    });
-  };
-
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY! }}
-        defaultCenter={{
-          lat: tripData?.sites[0].location.latitude,
-          lng: tripData?.sites[0].location.longitude,
-        }}
-        defaultZoom={5}
-      >
-        {renderHotels()}
-        {renderSites()}
-      </GoogleMapReact>
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <ResultList tripData={tripData} />
+      </Grid>
+      <Grid item xs={6}>
+        <ResultMap tripData={tripData} />
+      </Grid>
+    </Grid>
   );
 }

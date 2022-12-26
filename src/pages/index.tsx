@@ -2,7 +2,14 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import { Alert, Button, Slider, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Container,
+  Slider,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { SiteListCreator } from "../components/SiteList/SiteListCreator/SiteListCreator";
 import { useState } from "react";
 import axios from "axios";
@@ -10,7 +17,7 @@ import { useQuery } from "react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import planTrip, { IPlanTripRequest, IPlanTripResponse } from "../api/plantrip";
-import { ISite } from "../api/types";
+import { ISite } from "../types";
 import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteListCreatorv2";
 
 export default function Home() {
@@ -70,14 +77,14 @@ export default function Home() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Stack paddingX={24}>
+        <Container maxWidth="sm">
           <Typography
             variant="h4"
             textAlign={"center"}
             marginBottom={24}
             marginTop={8}
           >
-            Your Trip
+            Plan your trip
           </Typography>
           {error ? (
             <Alert severity="error">{error.response.data.error}</Alert>
@@ -105,7 +112,7 @@ export default function Home() {
               defaultValue={hotelFindingRadius}
               step={1}
               min={1}
-              max={50}
+              max={100}
               valueLabelDisplay="on"
               onChangeCommitted={handleHotelFindingRadiusChange}
             />
@@ -119,7 +126,7 @@ export default function Home() {
               Submit
             </LoadingButton>
           </Box>
-        </Stack>
+        </Container>
       </Grid>
       <Grid item xs={6}>
         <SiteListCreatorV2

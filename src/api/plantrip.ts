@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IGeoCode, ISite } from "./types";
+import { IGeoCode, IHotel, ISite } from "../types";
 
 export interface IDayDrive {
   duration_in_hours: number;
@@ -10,7 +10,7 @@ export interface IDayDrive {
 
 export interface IDayDriveWithHotel {
   day_drive: IDayDrive;
-  hotel_geocodes: IGeoCode[];
+  hotels: IHotel[];
 }
 
 export interface IPlanTripRequest {

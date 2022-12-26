@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ISite } from "./types";
+import { ISite } from "../types";
 
 
 export interface IHydrateSiteRequest {
