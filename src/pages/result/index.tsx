@@ -20,8 +20,8 @@ export default function ResultPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  // const tripData = queryClient.getQueryData<IPlanTripResponse>("plan-trip");
-  const tripData = planTripResponseMock;
+  const tripData = queryClient.getQueryData<IPlanTripResponse>("plan-trip");
+  // const tripData = planTripResponseMock;
 
   if (!tripData) {
     typeof window !== "undefined" && router.push("/");

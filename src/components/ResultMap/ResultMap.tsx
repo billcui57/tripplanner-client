@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import { Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { useQueryClient } from "react-query";
 import GoogleMapReact from "google-map-react";
@@ -12,32 +12,96 @@ import { Circle } from "@mui/icons-material";
 import { Pin } from "../../components/Pin/Pin";
 import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
+import useSupercluster from "use-supercluster";
 
 interface IProps {
   tripData: IPlanTripResponse;
 }
 
 export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
+  const mapRef = useRef();
+  const [bounds, setBounds] = useState<any[] | undefined>(undefined);
+  const [zoom, setZoom] = useState(10);
+
+  const points = tripData.day_drive_with_hotels
+    .map((dayDrive, i) => {
+      return dayDrive.hotels.map((hotel, j) => {
+        return {
+          type: "Feature",
+          properties: {
+            cluster: false,
+            name: hotel.name,
+            dayCount: i + 1,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [hotel.location.longitude, hotel.location.latitude],
+          },
+        };
+      });
+    })
+    .flat();
+
+  const { clusters, supercluster } = useSupercluster({
+    points,
+    bounds,
+    zoom,
+    options: { radius: 50, maxZoom: 20 },
+  });
+
   const renderHotels = () => {
-    const hotelMarkers = tripData.day_drive_with_hotels
-      .map((dayDrive, i) => {
-        return dayDrive.hotels.map((hotel, j) => {
-          return (
-            <Pin
-              lat={hotel.location.latitude}
-              lng={hotel.location.longitude}
-              color="green"
-              key={`hotel-marker-day-drive-${i}-hotel-${j}`}
-              popOverText={hotel.name}
-            >
-              {i + 1}
-              <HotelIcon fontSize="small" />
-            </Pin>
-          );
-        });
-      })
-      .flat();
-    return hotelMarkers;
+    return clusters.map((cluster, i) => {
+      const [longitude, latitude] = cluster.geometry.coordinates;
+      const {
+        cluster: isCluster,
+        point_count: pointCount,
+        name: hotelName,
+        dayCount,
+      } = cluster.properties;
+      if (isCluster) {
+        return (
+          <Pin
+            lat={latitude}
+            lng={longitude}
+            color="green"
+            key={`hotel-marker-${i}`}
+            hoverText={`${pointCount} hotels`}
+          >
+            <Typography variant="caption">{pointCount}</Typography>
+            <HotelIcon fontSize="small" />
+          </Pin>
+        );
+      } else {
+        return (
+          <Pin
+            lat={latitude}
+            lng={longitude}
+            color="pink"
+            key={`hotel-marker-${i}`}
+            hoverText={hotelName}
+          >
+            <HotelIcon fontSize="small" />
+          </Pin>
+        );
+      }
+    });
+  };
+
+  const renderEndOfDays = () => {
+    return tripData.day_drive_with_hotels.map((dayDrive, i) => {
+      const location = dayDrive.day_drive.end_location;
+      return (
+        <Pin
+          lat={location.latitude}
+          lng={location.longitude}
+          color="blue"
+          key={`end-of-day-marker-${i}`}
+          hoverText={`Area to rest after day ${i + 1}`}
+        >
+          <Typography variant="caption">Night {i + 1}</Typography>
+        </Pin>
+      );
+    });
   };
 
   const renderSites = () => {
@@ -49,7 +113,7 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
           color="pink"
           key={`site-marker-${i}`}
         >
-          {i + 1}
+          <Typography variant="caption">Site {i + 1}</Typography>
         </Pin>
       );
     });
@@ -64,9 +128,23 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
           lng: tripData?.sites[0].location.longitude,
         }}
         defaultZoom={5}
+        yesIWantToUseGoogleMapApiInternals
+        onGoogleApiLoaded={({ map }) => {
+          mapRef.current = map;
+        }}
+        onChange={({ zoom, bounds }) => {
+          setZoom(zoom);
+          setBounds([
+            bounds.nw.lng,
+            bounds.se.lat,
+            bounds.se.lng,
+            bounds.nw.lat,
+          ]);
+        }}
       >
         {renderHotels()}
         {renderSites()}
+        {renderEndOfDays()}
       </GoogleMapReact>
     </div>
   );
