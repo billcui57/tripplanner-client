@@ -28,6 +28,7 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
               lng={hotel.location.longitude}
               color="green"
               key={`hotel-marker-day-drive-${i}-hotel-${j}`}
+              popOverText={hotel.name}
             >
               {i + 1}
               <HotelIcon fontSize="small" />

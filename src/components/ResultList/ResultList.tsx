@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
@@ -51,7 +52,7 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
                   <Typography variant="body1">{`Start in ${dayDrive.day_drive.start_location}`}</Typography>
                   <Typography variant="body1">{`End in ${dayDrive.day_drive.end_location}`}</Typography>
                   <Accordion>
-                    <AccordionSummary>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle1">Hotels</Typography>
                     </AccordionSummary>
                     {dayDrive.hotels.map((hotel, j) => {
