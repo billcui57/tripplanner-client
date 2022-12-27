@@ -49,8 +49,6 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
                 <CardContent>
                   <Typography variant="h6">{`Day ${i + 1}`}</Typography>
                   <Typography variant="body1">{`Drive ${dayDrive.day_drive.duration_in_hours} hours`}</Typography>
-                  <Typography variant="body1">{`Start in ${dayDrive.day_drive.start_location}`}</Typography>
-                  <Typography variant="body1">{`End in ${dayDrive.day_drive.end_location}`}</Typography>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle1">Hotels</Typography>

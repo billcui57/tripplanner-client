@@ -11,7 +11,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { SiteListCreator } from "../components/SiteList/SiteListCreator/SiteListCreator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -25,26 +25,51 @@ export default function Home() {
   const [sites, setSites] = useState<ISite[]>([]);
   const [maxDrivingHours, setMaxDrivingHours] = useState<number>(2);
   const [hotelFindingRadius, setHotelFindingRadius] = useState<number>(20);
+  const [urlLoaded, setUrlLoaded] = useState<boolean>(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("a");
+    if (router.isReady) {
+      syncRequestWithURL();
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (urlLoaded) {
+      console.log("b");
+      syncURLWithRequest();
+    }
+  }, [sites, maxDrivingHours, hotelFindingRadius]);
+
+  const syncURLWithRequest = () => {
+    planTripRequest = {
+      sites: sites,
+      max_driving_hours: maxDrivingHours,
+      hotel_finding_radius: hotelFindingRadius,
+    };
+    router.replace({
+      query: { data: JSON.stringify(planTripRequest) },
+    });
+  };
+
+  const syncRequestWithURL = () => {
+    const queryData = router.query.data as string;
+
+    if (!queryData) {
+      return;
+    }
+    const planTripRequest: IPlanTripRequest = JSON.parse(queryData);
+    setSites(planTripRequest.sites);
+    setMaxDrivingHours(planTripRequest.max_driving_hours);
+    setHotelFindingRadius(planTripRequest.hotel_finding_radius);
+    setUrlLoaded(true);
+  };
 
   const handleSiteListChange = (newSiteList: ISite[]) => {
     setSites(newSiteList);
   };
-
-  const fetchData = async () => {
-    if (planTripRequest) {
-      return planTrip(planTripRequest);
-    }
-  };
-
-  const { isLoading, data, error, refetch } = useQuery("plan-trip", fetchData, {
-    enabled: false,
-    retry: false,
-    onSuccess: () => {
-      router.push("/result");
-    },
-  });
 
   const handleSubmitButtonClick = () => {
     planTripRequest = {
@@ -52,7 +77,11 @@ export default function Home() {
       max_driving_hours: maxDrivingHours,
       hotel_finding_radius: hotelFindingRadius,
     };
-    refetch();
+
+    router.push({
+      pathname: "/result",
+      query: { data: JSON.stringify(planTripRequest) },
+    });
   };
 
   const handleMaxDrivingHoursChange = (
@@ -73,7 +102,6 @@ export default function Home() {
     return sites.length >= 2;
   };
 
-  console.log(error);
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -86,9 +114,6 @@ export default function Home() {
           >
             Plan your trip
           </Typography>
-          {error ? (
-            <Alert severity="error">{error.response.data.error}</Alert>
-          ) : null}
 
           <Box>
             <Typography variant="body1" textAlign={"center"}>
@@ -96,6 +121,7 @@ export default function Home() {
             </Typography>
             <Slider
               defaultValue={maxDrivingHours}
+              key={maxDrivingHours}
               step={1}
               min={1}
               max={8}
@@ -110,6 +136,7 @@ export default function Home() {
             </Typography>
             <Slider
               defaultValue={hotelFindingRadius}
+              key={hotelFindingRadius}
               step={1}
               min={1}
               max={100}
@@ -118,13 +145,9 @@ export default function Home() {
             />
           </Box>
           <Box textAlign="center">
-            <LoadingButton
-              loading={isLoading}
-              onClick={handleSubmitButtonClick}
-              disabled={!canSubmit()}
-            >
+            <Button onClick={handleSubmitButtonClick} disabled={!canSubmit()}>
               Submit
-            </LoadingButton>
+            </Button>
           </Box>
         </Container>
       </Grid>
