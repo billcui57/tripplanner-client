@@ -30,7 +30,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("a");
     if (router.isReady) {
       syncRequestWithURL();
     }
@@ -38,7 +37,6 @@ export default function Home() {
 
   useEffect(() => {
     if (urlLoaded) {
-      console.log("b");
       syncURLWithRequest();
     }
   }, [sites, maxDrivingHours, hotelFindingRadius]);

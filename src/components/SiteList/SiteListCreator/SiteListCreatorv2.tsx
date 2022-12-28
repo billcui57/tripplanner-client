@@ -23,7 +23,8 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
     return sites.map((site, index) => {
       return (
         <Pin
-          color="pink"
+          type="site"
+          geocode={site.location}
           lat={site.location.latitude}
           lng={site.location.longitude}
           key={`site-${index}`}
@@ -41,9 +42,10 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
     }
     return (
       <Pin
+        geocode={curSite.location}
         lat={curSite.location.latitude}
         lng={curSite.location.longitude}
-        color="green"
+        type="cur-site"
       >
         <PlaceIcon />
       </Pin>

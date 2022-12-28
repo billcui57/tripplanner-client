@@ -26,10 +26,14 @@ import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
 
 interface IProps {
-  tripData: IPlanTripResponse;
+  tripData: IPlanTripResponse | undefined;
 }
 
 export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
+  if (!tripData) {
+    return null;
+  }
+
   const renderDayTrips = () => {
     return (
       <List
@@ -48,7 +52,7 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
               <Card variant="outlined" sx={{ width: "100%" }}>
                 <CardContent>
                   <Typography variant="h6">{`Day ${i + 1}`}</Typography>
-                  <Typography variant="body1">{`Drive ${dayDrive.day_drive.duration_in_hours} hours`}</Typography>
+                  <Typography variant="body1">{`Drive ${dayDrive.day_drive.distance_in_meters} meters`}</Typography>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle1">Hotels</Typography>

@@ -9,19 +9,27 @@ import { useQueryClient } from "react-query";
 import GoogleMapReact from "google-map-react";
 import { IPlanTripResponse } from "../../api/plantrip";
 import { Circle } from "@mui/icons-material";
-import { Pin } from "../../components/Pin/Pin";
+import { IPin, Pin } from "../../components/Pin/Pin";
 import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
 import useSupercluster from "use-supercluster";
 
 interface IProps {
-  tripData: IPlanTripResponse;
+  tripData: IPlanTripResponse | undefined;
+  onMarkerClick: (point: IPin) => void;
 }
 
-export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
+export const ResultMap: React.FC<IProps> = ({
+  tripData,
+  onMarkerClick,
+}: IProps) => {
   const mapRef = useRef();
   const [bounds, setBounds] = useState<any[] | undefined>(undefined);
   const [zoom, setZoom] = useState(10);
+
+  if (!tripData) {
+    return null;
+  }
 
   const points = tripData.day_drive_with_hotels
     .map((dayDrive, i) => {
@@ -42,6 +50,7 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
     })
     .flat();
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { clusters, supercluster } = useSupercluster({
     points,
     bounds,
@@ -63,7 +72,8 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
           <Pin
             lat={latitude}
             lng={longitude}
-            color="green"
+            geocode={{ latitude: latitude, longitude: longitude }}
+            type="cluster"
             key={`hotel-marker-${i}`}
             hoverText={`${pointCount} hotels`}
           >
@@ -72,13 +82,20 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
           </Pin>
         );
       } else {
+        const pin: IPin = {
+          geocode: { latitude: latitude, longitude: longitude },
+          type: "hotel",
+        };
         return (
           <Pin
             lat={latitude}
             lng={longitude}
-            color="pink"
+            {...pin}
             key={`hotel-marker-${i}`}
             hoverText={hotelName}
+            onClick={() => {
+              onMarkerClick(pin);
+            }}
           >
             <HotelIcon fontSize="small" />
           </Pin>
@@ -90,11 +107,15 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
   const renderEndOfDays = () => {
     return tripData.day_drive_with_hotels.map((dayDrive, i) => {
       const location = dayDrive.day_drive.end_location;
+      const pin: IPin = {
+        geocode: { latitude: location.latitude, longitude: location.longitude },
+        type: "end-of-day",
+      };
       return (
         <Pin
           lat={location.latitude}
           lng={location.longitude}
-          color="blue"
+          {...pin}
           key={`end-of-day-marker-${i}`}
           hoverText={`Area to rest after day ${i + 1}`}
         >
@@ -106,12 +127,22 @@ export const ResultMap: React.FC<IProps> = ({ tripData }: IProps) => {
 
   const renderSites = () => {
     return tripData.sites.map((site, i) => {
+      const pin: IPin = {
+        geocode: {
+          latitude: site.location.latitude,
+          longitude: site.location.longitude,
+        },
+        type: "site",
+      };
       return (
         <Pin
           lat={site.location.latitude}
           lng={site.location.longitude}
-          color="pink"
+          {...pin}
           key={`site-marker-${i}`}
+          onClick={() => {
+            onMarkerClick(pin);
+          }}
         >
           <Typography variant="caption">Site {i + 1}</Typography>
         </Pin>
