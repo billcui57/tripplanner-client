@@ -80,20 +80,6 @@ export default function ResultPage() {
     setDirectionTypeSelectModalOpen(false);
   };
 
-  if (isLoading) {
-    return (
-      <React.Fragment>
-        <CircularProgress
-          sx={{
-            position: "fixed",
-            top: "47%",
-            left: "49%",
-          }}
-        />
-      </React.Fragment>
-    );
-  }
-
   if (error) {
     return (
       <Alert
@@ -106,6 +92,20 @@ export default function ResultPage() {
       >
         {error.response.data.error}
       </Alert>
+    );
+  }
+
+  if (isLoading || !data) {
+    return (
+      <React.Fragment>
+        <CircularProgress
+          sx={{
+            position: "fixed",
+            top: "47%",
+            left: "49%",
+          }}
+        />
+      </React.Fragment>
     );
   }
 

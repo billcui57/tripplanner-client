@@ -24,6 +24,7 @@ import { Circle } from "@mui/icons-material";
 import { Pin } from "../../components/Pin/Pin";
 import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
+import { formatDecimalTime } from "../../pages/result/utils";
 
 interface IProps {
   tripData: IPlanTripResponse | undefined;
@@ -52,7 +53,9 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
               <Card variant="outlined" sx={{ width: "100%" }}>
                 <CardContent>
                   <Typography variant="h6">{`Day ${i + 1}`}</Typography>
-                  <Typography variant="body1">{`Drive ${dayDrive.day_drive.distance_in_meters} meters`}</Typography>
+                  <Typography variant="body1">{`Drive ${formatDecimalTime(
+                    dayDrive.day_drive.duration_in_hours
+                  )}`}</Typography>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle1">Hotels</Typography>
