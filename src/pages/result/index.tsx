@@ -33,6 +33,7 @@ import {
   DirectionTypeSelectModal,
   IDirectionType,
 } from "../../components/DirectionCreator.tsx/DirectionTypeSelectModal";
+import zIndex from "@mui/material/styles/zIndex";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -116,15 +117,15 @@ export default function ResultPage() {
           <Button color="inherit" size="small" onClick={goToMainPage}>
             Go Back
           </Button>
-
-          <DirectionCreator
-            source={sourceLocation}
-            destination={destLocation}
-          />
-
           <ResultList tripData={data} />
         </Grid>
         <Grid item xs={6}>
+          <Box sx={{ position: "absolute", top: 10, right: 64, zIndex: 999 }}>
+            <DirectionCreator
+              source={sourceLocation}
+              destination={destLocation}
+            />
+          </Box>
           <ResultMap tripData={data} onMarkerClick={handleMarkerClick} />
         </Grid>
       </Grid>

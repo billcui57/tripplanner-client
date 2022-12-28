@@ -56,6 +56,7 @@ export default function Home() {
     const queryData = router.query.data as string;
 
     if (!queryData) {
+      setUrlLoaded(true);
       return;
     }
     const planTripRequest: IPlanTripRequest = JSON.parse(queryData);
@@ -121,7 +122,7 @@ export default function Home() {
               defaultValue={maxDrivingHours}
               key={maxDrivingHours}
               step={1}
-              min={1}
+              min={2}
               max={8}
               marks
               valueLabelDisplay="on"
@@ -136,7 +137,7 @@ export default function Home() {
               defaultValue={hotelFindingRadius}
               key={hotelFindingRadius}
               step={1}
-              min={1}
+              min={10}
               max={100}
               valueLabelDisplay="on"
               onChangeCommitted={handleHotelFindingRadiusChange}

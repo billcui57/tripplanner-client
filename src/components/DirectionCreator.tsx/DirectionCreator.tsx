@@ -90,13 +90,18 @@ export const DirectionCreator: React.FC<IProps> = (props: IProps) => {
   };
 
   return (
-    <React.Fragment>
-      <Stack direction="row" alignItems={"center"}>
+    <Paper sx={{ padding: 2 }}>
+      <Stack
+        direction="row"
+        alignItems={"center"}
+        justifyContent={"center"}
+        spacing={1}
+      >
         {renderPoint(props.source)}
         <EastIcon />
         {renderPoint(props.destination)}
       </Stack>
       <Button onClick={handleGenerateRoute}>Generate Route</Button>
-    </React.Fragment>
+    </Paper>
   );
 };
