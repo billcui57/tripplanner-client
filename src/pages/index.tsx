@@ -1,24 +1,11 @@
+import { Button, Container, Slider, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import {
-  Alert,
-  Button,
-  Container,
-  Slider,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { SiteListCreator } from "../components/SiteList/SiteListCreator/SiteListCreator";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useQuery } from "react-query";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
-import planTrip, { IPlanTripRequest, IPlanTripResponse } from "../api/plantrip";
-import { ISite } from "../types";
+import { useEffect, useState } from "react";
+import { IPlanTripRequest } from "../api/plantrip";
 import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteListCreatorv2";
+import { ISite } from "../types";
 
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;

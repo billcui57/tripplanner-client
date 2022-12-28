@@ -1,39 +1,18 @@
+import { Alert, Button, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import {
-  Alert,
-  AlertTitle,
-  Button,
-  CircularProgress,
-  Container,
-  Skeleton,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useQueryClient } from "react-query";
-import GoogleMapReact from "google-map-react";
-import { useQuery } from "react-query";
-import planTrip, {
-  IPlanTripRequest,
-  IPlanTripResponse,
-} from "../../api/plantrip";
-import { Circle } from "@mui/icons-material";
-import { IPin, Pin } from "../../components/Pin/Pin";
-import HotelIcon from "@mui/icons-material/Hotel";
 import { useRouter } from "next/router";
-import { ResultMap } from "../../components/ResultMap/ResultMap";
-import { planTripResponseMock } from "../../api/mock";
-import { ResultList } from "../../components/ResultList/ResultList";
-import { IGeoCode } from "../../types";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import planTrip, { IPlanTripRequest } from "../../api/plantrip";
 import { DirectionCreator } from "../../components/DirectionCreator.tsx/DirectionCreator";
 import {
   DirectionTypeSelectModal,
   IDirectionType,
 } from "../../components/DirectionCreator.tsx/DirectionTypeSelectModal";
-import zIndex from "@mui/material/styles/zIndex";
+import { IPin } from "../../components/Pin/Pin";
+import { ResultList } from "../../components/ResultList/ResultList";
+import { ResultMap } from "../../components/ResultMap/ResultMap";
 
 export default function ResultPage() {
   const router = useRouter();

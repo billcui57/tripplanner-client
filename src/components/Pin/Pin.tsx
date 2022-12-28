@@ -1,11 +1,8 @@
-import PlaceIcon from "@mui/icons-material/Place";
-import { Avatar, Popover, Tooltip, Typography } from "@mui/material";
+import { Avatar, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/system";
 import * as React from "react";
-import { blue, green, pink } from "@mui/material/colors";
-import { IGeoCode } from "../../types";
 import { getPinColour } from "../../pages/result/utils";
+import { IGeoCode } from "../../types";
 
 export interface IPin {
   geocode: IGeoCode;

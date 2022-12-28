@@ -1,13 +1,11 @@
-import { Circle } from "@mui/icons-material";
-import Box from "@mui/material/Box";
+import PlaceIcon from "@mui/icons-material/Place";
 import { Button, styled } from "@mui/material";
 import GoogleMapReact from "google-map-react";
+import { cloneDeep } from "lodash";
 import * as React from "react";
 import { useState } from "react";
 import { ISite } from "../../../types";
 import { Pin } from "../../Pin/Pin";
-import { cloneDeep } from "lodash";
-import PlaceIcon from "@mui/icons-material/Place";
 
 interface IProps {
   onChange: (newSiteList: ISite[]) => void;
