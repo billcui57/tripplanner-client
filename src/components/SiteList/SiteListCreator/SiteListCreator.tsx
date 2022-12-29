@@ -1,50 +1,127 @@
-import { TextField } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import PlaceIcon from "@mui/icons-material/Place";
+import { Button, styled } from "@mui/material";
+import GoogleMapReact from "google-map-react";
 import { cloneDeep } from "lodash";
 import * as React from "react";
+import { useState } from "react";
 import { ISite } from "../../../types";
+import { Pin } from "../../Pin/Pin";
 
 interface IProps {
   onChange: (newSiteList: ISite[]) => void;
   sites: ISite[];
 }
 
-export const SiteListCreator: React.FC<IProps> = ({ onChange, sites }) => {
-  const handleSiteChange = (event: any, index: number) => {
-    const _sites = cloneDeep(sites);
-    const newSiteName: string = event.target.value;
-    _sites[index].name = newSiteName;
-    onChange(_sites);
-  };
+export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
+  const [curSite, setCurSite] = useState<ISite | undefined>(undefined);
+  const [selectedSiteIndex, setSelectedSiteIndex] =
+    useState<number | undefined>(undefined);
 
-  const handleSiteBlur = (event: any, index: number) => {
-    const _sites = cloneDeep(sites);
-    const newSiteName = event.target.value;
-    if (newSiteName === "") {
-      _sites.splice(index, 1);
-    }
-    onChange(_sites);
-  };
-
-  const renderSiteList = () => {
+  const renderSites = () => {
     return sites.map((site, index) => {
       return (
-        <TextField
-          defaultValue={site.name}
-          key={`site-${index + 1}`}
-          label={`site-${index + 1}`}
-          onChange={(e) => handleSiteChange(e, index)}
-          onBlur={(e) => handleSiteBlur(e, index)}
-          value={site.name}
-        ></TextField>
+        <Pin
+          type="site"
+          geocode={site.location}
+          lat={site.location.latitude}
+          lng={site.location.longitude}
+          key={`site-${index}`}
+          onClick={() => handleSiteClick(index)}
+        >
+          {index + 1}
+        </Pin>
       );
     });
   };
 
+  const renderCurSite = () => {
+    if (curSite === undefined) {
+      return null;
+    }
+    return (
+      <Pin
+        geocode={curSite.location}
+        lat={curSite.location.latitude}
+        lng={curSite.location.longitude}
+        type="cur-site"
+      >
+        <PlaceIcon />
+      </Pin>
+    );
+  };
+
+  const handleSiteClick = (index: number) => {
+    setCurSite(undefined);
+    setSelectedSiteIndex(index);
+  };
+
+  const handleMapClick = (value: GoogleMapReact.ClickEventValue) => {
+    setSelectedSiteIndex(undefined);
+    setCurSite({ location: { latitude: value.lat, longitude: value.lng } });
+  };
+
+  const handleAddSiteButtonClick = () => {
+    if (!curSite) {
+      return;
+    }
+    const _sites = cloneDeep(sites);
+    _sites.push(curSite);
+    onChange(_sites);
+    setCurSite(undefined);
+  };
+
+  const handleRemoveSiteButtonClick = () => {
+    if (selectedSiteIndex === undefined) {
+      return;
+    }
+
+    const _sites = cloneDeep(sites);
+    _sites.splice(selectedSiteIndex, 1);
+    onChange(_sites);
+    setSelectedSiteIndex(undefined);
+  };
+
   return (
-    <>
-      <Typography variant="h4">Sites</Typography>
-      {renderSiteList()}
-    </>
+    <div style={{ height: "100vh", width: "100%" }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY! }}
+        defaultCenter={{
+          lat: 44.1236349,
+          lng: -79.3715556,
+        }}
+        defaultZoom={5}
+        onClick={handleMapClick}
+      >
+        {renderCurSite()}
+        {renderSites()}
+      </GoogleMapReact>
+      {curSite ? (
+        <Wrapper>
+          <StyledButton variant="contained" onClick={handleAddSiteButtonClick}>
+            Add Site
+          </StyledButton>
+        </Wrapper>
+      ) : null}
+      {selectedSiteIndex !== undefined ? (
+        <Wrapper>
+          <StyledButton
+            variant="contained"
+            onClick={handleRemoveSiteButtonClick}
+          >
+            Remove Site
+          </StyledButton>
+        </Wrapper>
+      ) : null}
+    </div>
   );
 };
+
+const Wrapper = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+});
+
+const StyledButton = styled(Button)({
+  position: "absolute",
+  bottom: 24,
+});

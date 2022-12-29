@@ -31,12 +31,20 @@ export default function ResultPage() {
   const fetchData = async () => {
     return planTrip(planTripRequest!);
   };
-  const { isLoading, data, error, refetch } = useQuery("plan-trip", fetchData, {
-    retry: false,
-    cacheTime: 0,
-    refetchOnWindowFocus: false,
-    enabled: !!router.query.data && !!planTripRequest,
-  });
+
+  const getQueryKey = () => {
+    return "plan-trip" + queryData;
+  };
+
+  const { isLoading, data, error, refetch } = useQuery(
+    getQueryKey(),
+    fetchData,
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: !!router.query.data && !!planTripRequest,
+    }
+  );
 
   const goToMainPage = () => {
     console.log(planTripRequest);
