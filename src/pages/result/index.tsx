@@ -91,6 +91,7 @@ export default function ResultPage() {
             position: "fixed",
             top: "47%",
             left: "49%",
+            color: "#2A9D8F",
           }}
         />
       </React.Fragment>
@@ -101,7 +102,7 @@ export default function ResultPage() {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Button color="inherit" size="small" onClick={goToMainPage}>
+          <Button sx={{ color: "#264653" }} size="small" onClick={goToMainPage}>
             Go Back
           </Button>
           <ResultList tripData={data} />

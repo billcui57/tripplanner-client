@@ -63,6 +63,7 @@ export const DirectionCreator: React.FC<IProps> = (props: IProps) => {
       <Button
         onClick={handleGenerateRoute}
         disabled={!props.source || !props.destination}
+        sx={{ color: "#2A9D8F" }}
       >
         Generate Route
       </Button>

@@ -39,13 +39,17 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
             <ListItem key={`day-${i}`}>
               <Card variant="outlined" sx={{ width: "100%" }}>
                 <CardContent>
-                  <Typography variant="h6">{`Day ${i + 1}`}</Typography>
+                  <Typography variant="h6" sx={{ color: "#2A9D8F" }}>{`Day ${
+                    i + 1
+                  }`}</Typography>
                   <Typography variant="body1">{`Drive ${formatDecimalTime(
                     dayDrive.day_drive.duration_in_hours
                   )}`}</Typography>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography variant="subtitle1">Hotels</Typography>
+                      <Typography variant="subtitle1" sx={{ color: "#2A9D8F" }}>
+                        Hotels
+                      </Typography>
                     </AccordionSummary>
                     {dayDrive.hotels.map((hotel, j) => {
                       return (
@@ -70,6 +74,7 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
         textAlign={"center"}
         marginBottom={2}
         marginTop={8}
+        sx={{ color: "#264653" }}
       >
         Your trip, planned
       </Typography>

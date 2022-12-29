@@ -97,8 +97,9 @@ export default function Home() {
             textAlign={"center"}
             marginBottom={24}
             marginTop={8}
+            sx={{ color: "#264653" }}
           >
-            Plan your trip
+            Plan Your Trip
           </Typography>
 
           <Box>
@@ -112,6 +113,7 @@ export default function Home() {
               min={2}
               max={8}
               marks
+              sx={{ color: "#2A9D8F" }}
               valueLabelDisplay="on"
               onChangeCommitted={handleMaxDrivingHoursChange}
             />
@@ -126,12 +128,17 @@ export default function Home() {
               step={1}
               min={10}
               max={100}
+              sx={{ color: "#2A9D8F" }}
               valueLabelDisplay="on"
               onChangeCommitted={handleHotelFindingRadiusChange}
             />
           </Box>
           <Box textAlign="center">
-            <Button onClick={handleSubmitButtonClick} disabled={!canSubmit()}>
+            <Button
+              onClick={handleSubmitButtonClick}
+              disabled={!canSubmit()}
+              sx={{ color: "#2A9D8F" }}
+            >
               Submit
             </Button>
           </Box>
