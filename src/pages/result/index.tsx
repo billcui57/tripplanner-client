@@ -1,6 +1,7 @@
 import { Alert, Button, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
@@ -22,6 +23,7 @@ export default function ResultPage() {
   const [selectedPin, setSelectedPin] = useState<IPin | undefined>(undefined);
   const [directionTypeSelectModalOpen, setDirectionTypeSelectModalOpen] =
     useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const queryData = router.query.data as string;
   const planTripRequest: IPlanTripRequest | undefined = queryData
@@ -36,15 +38,16 @@ export default function ResultPage() {
     return "plan-trip" + queryData;
   };
 
-  const { isLoading, data, error, refetch } = useQuery(
-    getQueryKey(),
-    fetchData,
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-      enabled: !!router.query.data && !!planTripRequest,
-    }
-  );
+  const { isLoading, data, refetch } = useQuery(getQueryKey(), fetchData, {
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: !!router.query.data && !!planTripRequest,
+    onError: (err) => {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data.error);
+      }
+    },
+  });
 
   const goToMainPage = () => {
     console.log(planTripRequest);
@@ -78,7 +81,7 @@ export default function ResultPage() {
           </Button>
         }
       >
-        {error.response.data.error}
+        {error}
       </Alert>
     );
   }

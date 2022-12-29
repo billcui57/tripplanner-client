@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IPlanTripResponse } from "../../api/plantrip";
-import { formatDecimalTime } from "../../pages/result/utils";
+import { formatDecimalTime } from "../../utils";
 
 interface IProps {
   tripData: IPlanTripResponse | undefined;

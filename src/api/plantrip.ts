@@ -22,6 +22,7 @@ export interface IPlanTripRequest {
 export interface IPlanTripResponse {
   day_drive_with_hotels: IDayDriveWithHotel[];
   sites: ISite[]
+  route_polyline: IGeoCode[]
 }
 
 export default async function planTrip(planTripRequest: IPlanTripRequest) {

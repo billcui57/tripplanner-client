@@ -1,7 +1,7 @@
 import { Avatar, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as React from "react";
-import { getPinColour } from "../../pages/result/utils";
+import { getPinColour } from "../../utils";
 import { IGeoCode } from "../../types";
 
 export interface IPin {

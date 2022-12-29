@@ -1,6 +1,6 @@
 import { blue, green, pink } from "@mui/material/colors";
 import { camelCase } from 'lodash';
-import { IPin } from '../../components/Pin/Pin';
+import { IPin } from './components/Pin/Pin';
 
 export const camelizeKeys = (obj: any): object => {
   if (Array.isArray(obj)) {

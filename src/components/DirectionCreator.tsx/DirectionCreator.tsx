@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import React from "react";
 import { IPin } from "../../components/Pin/Pin";
-import { getPinColour } from "../../pages/result/utils";
+import { getPinColour } from "../../utils";
 
 interface IProps {
   source: IPin | undefined;
