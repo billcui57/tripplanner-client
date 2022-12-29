@@ -10,7 +10,7 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import { IPlanTripResponse } from "../../api/plantrip";
+import { IPlanTripResponse } from "../../service/plantrip";
 import { formatDecimalTime } from "../../utils";
 
 interface IProps {

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { IPlanTripRequest } from "../api/plantrip";
+import { IPlanTripRequest } from "../service/plantrip";
 import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteListCreator";
 import { ISite } from "../types";
 

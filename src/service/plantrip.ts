@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IGeoCode, IHotel, ISite } from "../types";
+import { buildUrl } from "./util";
 
 export interface IDayDrive {
   duration_in_hours: number;
@@ -27,7 +28,7 @@ export interface IPlanTripResponse {
 
 export default async function planTrip(planTripRequest: IPlanTripRequest) {
   return axios
-    .post<IPlanTripResponse>("/api/plan-trip", planTripRequest)
+    .post<IPlanTripResponse>(buildUrl("/plan-trip"), planTripRequest)
     .then((res) => {
       return res.data;
     });

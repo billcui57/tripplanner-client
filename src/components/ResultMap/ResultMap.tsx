@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import GoogleMapReact from "google-map-react";
 import { useRef, useState } from "react";
 import useSupercluster from "use-supercluster";
-import { IPlanTripResponse } from "../../api/plantrip";
+import { IPlanTripResponse } from "../../service/plantrip";
 import { IPin, Pin } from "../../components/Pin/Pin";
 
 interface IProps {

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import planTrip, { IPlanTripRequest } from "../../api/plantrip";
+import planTrip, { IPlanTripRequest } from "../../service/plantrip";
 import { DirectionCreator } from "../../components/DirectionCreator.tsx/DirectionCreator";
 import {
   DirectionTypeSelectModal,
