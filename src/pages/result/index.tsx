@@ -1,4 +1,4 @@
-import { Alert, Button, CircularProgress } from "@mui/material";
+import { Alert, Button, CircularProgress, Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -14,6 +14,7 @@ import {
 import { IPin } from "../../components/Pin/Pin";
 import { ResultList } from "../../components/ResultList/ResultList";
 import { ResultMap } from "../../components/ResultMap/ResultMap";
+import { FAQ } from "../../components/FAQ/FAQ";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -73,16 +74,22 @@ export default function ResultPage() {
 
   if (error) {
     return (
-      <Alert
-        severity="error"
-        action={
-          <Button color="inherit" size="small" onClick={goToMainPage}>
-            Go Back
-          </Button>
-        }
-      >
-        {error}
-      </Alert>
+      <React.Fragment>
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" size="small" onClick={goToMainPage}>
+              Go Back
+            </Button>
+          }
+          sx={{ marginBottom: 8 }}
+        >
+          {error}
+        </Alert>
+        <Container maxWidth="sm">
+          <FAQ />
+        </Container>
+      </React.Fragment>
     );
   }
 
@@ -108,7 +115,13 @@ export default function ResultPage() {
           <Button sx={{ color: "#264653" }} size="small" onClick={goToMainPage}>
             Go Back
           </Button>
-          <ResultList tripData={data} />
+
+          <Container maxWidth="sm">
+            <Box sx={{ marginBottom: 8 }}>
+              <ResultList tripData={data} />
+            </Box>
+            <FAQ />
+          </Container>
         </Grid>
         <Grid item xs={6}>
           <Box sx={{ position: "absolute", top: 10, right: 64, zIndex: 999 }}>
@@ -120,6 +133,7 @@ export default function ResultPage() {
           <ResultMap tripData={data} onMarkerClick={handleMarkerClick} />
         </Grid>
       </Grid>
+
       <DirectionTypeSelectModal
         open={directionTypeSelectModalOpen}
         onClose={handleModalClose}

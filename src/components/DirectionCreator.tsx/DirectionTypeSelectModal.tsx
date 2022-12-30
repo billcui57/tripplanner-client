@@ -11,25 +11,27 @@ interface IProps {
 export const DirectionTypeSelectModal: React.FC<IProps> = (props: IProps) => {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <DialogTitle>Set this as source or destination</DialogTitle>
+      <DialogTitle sx={{ color: "#264653" }}>
+        Set this as source or destination
+      </DialogTitle>
 
       <Box textAlign={"center"} paddingBottom={4}>
-        <ButtonGroup variant="contained">
-          <Button
-            onClick={() => {
-              props.onClose("source");
-            }}
-          >
-            Source
-          </Button>
-          <Button
-            onClick={() => {
-              props.onClose("destination");
-            }}
-          >
-            Destination
-          </Button>
-        </ButtonGroup>
+        <Button
+          onClick={() => {
+            props.onClose("source");
+          }}
+          sx={{ color: "#2A9D8F" }}
+        >
+          Source
+        </Button>
+        <Button
+          onClick={() => {
+            props.onClose("destination");
+          }}
+          sx={{ color: "#2A9D8F" }}
+        >
+          Destination
+        </Button>
       </Box>
     </Dialog>
   );

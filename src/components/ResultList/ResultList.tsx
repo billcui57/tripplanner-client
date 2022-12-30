@@ -10,6 +10,7 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
+import React from "react";
 import { IPlanTripResponse } from "../../service/plantrip";
 import { formatDecimalTime } from "../../utils";
 
@@ -26,17 +27,16 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
     return (
       <List
         sx={{
-          width: "100%",
-          maxHeight: "600px",
-
           overflow: "auto",
           height: "100%",
+          maxHeight: "500px",
+          width: "100%",
           "& ul": { padding: 0 },
         }}
       >
         {tripData.day_drive_with_hotels.map((dayDrive, i) => {
           return (
-            <ListItem key={`day-${i}`}>
+            <ListItem key={`day-${i}`} sx={{ padding: 0 }}>
               <Card variant="outlined" sx={{ width: "100%" }}>
                 <CardContent>
                   <Typography variant="h6" sx={{ color: "#2A9D8F" }}>{`Day ${
@@ -68,7 +68,7 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
     );
   };
   return (
-    <Container maxWidth="sm">
+    <div>
       <Typography
         variant="h4"
         textAlign={"center"}
@@ -79,6 +79,6 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
         Your trip, planned
       </Typography>
       {renderDayTrips()}
-    </Container>
+    </div>
   );
 };

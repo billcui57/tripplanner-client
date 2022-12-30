@@ -1,4 +1,4 @@
-import { Button, Container, Slider, Typography } from "@mui/material";
+import { Button, Container, Slider, Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { IPlanTripRequest } from "../service/plantrip";
 import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteListCreator";
 import { ISite } from "../types";
+import { FAQ } from "../components/FAQ/FAQ";
 
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;
@@ -95,15 +96,27 @@ export default function Home() {
           <Typography
             variant="h4"
             textAlign={"center"}
-            marginBottom={24}
             marginTop={8}
             sx={{ color: "#264653" }}
           >
             Plan Your Trip
           </Typography>
+          <Typography
+            variant="body1"
+            textAlign={"center"}
+            marginTop={2}
+            marginBottom={16}
+            sx={{ color: "#264653" }}
+          >
+            Click on the map to start adding sites
+          </Typography>
 
           <Box>
-            <Typography variant="body1" textAlign={"center"}>
+            <Typography
+              variant="body1"
+              textAlign={"center"}
+              sx={{ color: "#264653" }}
+            >
               Max hours of driving per day
             </Typography>
             <Slider
@@ -118,8 +131,12 @@ export default function Home() {
               onChangeCommitted={handleMaxDrivingHoursChange}
             />
           </Box>
-          <Box marginBottom={16}>
-            <Typography variant="body1" textAlign={"center"}>
+          <Box marginBottom={8}>
+            <Typography
+              variant="body1"
+              textAlign={"center"}
+              sx={{ color: "#264653" }}
+            >
               Hotel finding radius
             </Typography>
             <Slider
@@ -133,7 +150,7 @@ export default function Home() {
               onChangeCommitted={handleHotelFindingRadiusChange}
             />
           </Box>
-          <Box textAlign="center">
+          <Box textAlign="center" marginBottom={8}>
             <Button
               onClick={handleSubmitButtonClick}
               disabled={!canSubmit()}
@@ -142,6 +159,7 @@ export default function Home() {
               Submit
             </Button>
           </Box>
+          <FAQ />
         </Container>
       </Grid>
       <Grid item xs={6}>
