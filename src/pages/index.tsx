@@ -126,7 +126,7 @@ export default function Home() {
               min={2}
               max={8}
               marks
-              sx={{ color: "#2A9D8F" }}
+              color="primary"
               valueLabelDisplay="on"
               onChangeCommitted={handleMaxDrivingHoursChange}
             />
@@ -145,7 +145,7 @@ export default function Home() {
               step={1}
               min={10}
               max={100}
-              sx={{ color: "#2A9D8F" }}
+              color="primary"
               valueLabelDisplay="on"
               onChangeCommitted={handleHotelFindingRadiusChange}
             />
@@ -154,7 +154,7 @@ export default function Home() {
             <Button
               onClick={handleSubmitButtonClick}
               disabled={!canSubmit()}
-              sx={{ color: "#2A9D8F" }}
+              color="primary"
             >
               Submit
             </Button>

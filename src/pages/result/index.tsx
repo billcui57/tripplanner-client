@@ -112,7 +112,7 @@ export default function ResultPage() {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Button sx={{ color: "#264653" }} size="small" onClick={goToMainPage}>
+          <Button color="primary" size="small" onClick={goToMainPage}>
             Go Back
           </Button>
 

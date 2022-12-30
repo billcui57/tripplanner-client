@@ -97,7 +97,11 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
       </GoogleMapReact>
       {curSite ? (
         <Wrapper>
-          <StyledButton variant="contained" onClick={handleAddSiteButtonClick}>
+          <StyledButton
+            color="primary"
+            variant="contained"
+            onClick={handleAddSiteButtonClick}
+          >
             Add Site
           </StyledButton>
         </Wrapper>

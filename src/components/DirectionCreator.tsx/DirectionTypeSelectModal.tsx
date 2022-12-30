@@ -11,7 +11,7 @@ interface IProps {
 export const DirectionTypeSelectModal: React.FC<IProps> = (props: IProps) => {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <DialogTitle sx={{ color: "#264653" }}>
+      <DialogTitle color="#264653">
         Set this as source or destination
       </DialogTitle>
 
@@ -20,7 +20,7 @@ export const DirectionTypeSelectModal: React.FC<IProps> = (props: IProps) => {
           onClick={() => {
             props.onClose("source");
           }}
-          sx={{ color: "#2A9D8F" }}
+          color="primary"
         >
           Source
         </Button>
@@ -28,7 +28,7 @@ export const DirectionTypeSelectModal: React.FC<IProps> = (props: IProps) => {
           onClick={() => {
             props.onClose("destination");
           }}
-          sx={{ color: "#2A9D8F" }}
+          color="primary"
         >
           Destination
         </Button>
