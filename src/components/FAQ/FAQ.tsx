@@ -13,6 +13,24 @@ export const FAQ: React.FC = () => {
       </Typography>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ color: "#264653" }}>
+            What does this tool do?
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Planning multi-day road trips can be stressful because there are
+            many things to consider, such as daily driving distance and desired
+            hotel options. If not planned properly, you may even have to retrace
+            your route to find a place to stay for the night. This tool aims to
+            make trip planning easier by giving you a comprehensive view of your
+            entire trip, as well as providing nice-to-haves such as exporting
+            routes into Google Maps.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography sx={{ color: "#264653" }}>What is a site?</Typography>
         </AccordionSummary>
         <AccordionDetails>
