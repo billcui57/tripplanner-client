@@ -1,19 +1,27 @@
 import HotelIcon from "@mui/icons-material/Hotel";
-import { Typography } from "@mui/material";
+import { Box, styled, Typography } from "@mui/material";
 import GoogleMapReact from "google-map-react";
 import { useRef, useState } from "react";
 import useSupercluster from "use-supercluster";
 import { IPlanTripResponse } from "../../service/plantrip";
 import { IPin, Pin } from "../../components/Pin/Pin";
+import { DirectionCreator } from "../DirectionCreator.tsx/DirectionCreator";
+import React from "react";
 
 interface IProps {
   tripData: IPlanTripResponse | undefined;
   onMarkerClick: (point: IPin) => void;
+  showDirectionCreator?: boolean;
+  directionCreatorSource: IPin | undefined;
+  directionCreatordestination: IPin | undefined;
 }
 
 export const ResultMap: React.FC<IProps> = ({
   tripData,
   onMarkerClick,
+  showDirectionCreator,
+  directionCreatorSource,
+  directionCreatordestination,
 }: IProps) => {
   const mapRef = useRef();
   const [bounds, setBounds] = useState<any[] | undefined>(undefined);
@@ -143,32 +151,51 @@ export const ResultMap: React.FC<IProps> = ({
   };
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY! }}
-        defaultCenter={{
-          lat: tripData?.sites[0].location.latitude,
-          lng: tripData?.sites[0].location.longitude,
-        }}
-        defaultZoom={5}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map }) => {
-          mapRef.current = map;
-        }}
-        onChange={({ zoom, bounds }) => {
-          setZoom(zoom);
-          setBounds([
-            bounds.nw.lng,
-            bounds.se.lat,
-            bounds.se.lng,
-            bounds.nw.lat,
-          ]);
-        }}
-      >
-        {renderHotels()}
-        {renderSites()}
-        {renderEndOfDays()}
-      </GoogleMapReact>
+    <div>
+      {showDirectionCreator ? (
+        <DirectionCreatorWrapper>
+          <DirectionCreator
+            source={directionCreatorSource}
+            destination={directionCreatordestination}
+          />
+        </DirectionCreatorWrapper>
+      ) : null}
+      <div style={{ height: "100vh", width: "100%" }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY! }}
+          defaultCenter={{
+            lat: tripData?.sites[0].location.latitude,
+            lng: tripData?.sites[0].location.longitude,
+          }}
+          defaultZoom={5}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map }) => {
+            mapRef.current = map;
+          }}
+          onChange={({ zoom, bounds }) => {
+            setZoom(zoom);
+            setBounds([
+              bounds.nw.lng,
+              bounds.se.lat,
+              bounds.se.lng,
+              bounds.nw.lat,
+            ]);
+          }}
+        >
+          {renderHotels()}
+          {renderSites()}
+          {renderEndOfDays()}
+        </GoogleMapReact>
+      </div>
     </div>
   );
 };
+
+const DirectionCreatorWrapper = styled(Box)({
+  position: "relative",
+  top: 24,
+  left: 24,
+  zIndex: 999,
+  height: 0,
+  width: 0,
+});

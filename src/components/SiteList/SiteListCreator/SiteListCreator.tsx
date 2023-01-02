@@ -126,6 +126,6 @@ const Wrapper = styled("div")({
 });
 
 const StyledButton = styled(Button)({
-  position: "absolute",
-  bottom: 24,
+  position: "relative",
+  bottom: 64,
 });

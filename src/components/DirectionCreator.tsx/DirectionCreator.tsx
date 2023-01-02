@@ -2,7 +2,7 @@ import EastIcon from "@mui/icons-material/East";
 import HotelIcon from "@mui/icons-material/Hotel";
 import PlaceIcon from "@mui/icons-material/Place";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Box, Button } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import React from "react";
@@ -48,25 +48,29 @@ export const DirectionCreator: React.FC<IProps> = (props: IProps) => {
   };
 
   return (
-    <Paper sx={{ padding: 2 }}>
-      <Stack
-        direction="row"
-        alignItems={"center"}
-        justifyContent={"center"}
-        spacing={1}
-        paddingBottom={1}
-      >
-        {renderPoint(props.source)}
-        <EastIcon />
-        {renderPoint(props.destination)}
-      </Stack>
-      <Button
-        onClick={handleGenerateRoute}
-        disabled={!props.source || !props.destination}
-        color="primary"
-      >
-        Generate Route
-      </Button>
-    </Paper>
+    <Box width={200}>
+      <Paper sx={{ padding: 2 }}>
+        <Stack
+          direction="row"
+          alignItems={"center"}
+          justifyContent={"center"}
+          spacing={1}
+          paddingBottom={1}
+        >
+          {renderPoint(props.source)}
+          <EastIcon />
+          {renderPoint(props.destination)}
+        </Stack>
+        <Box sx={{ textAlign: "center" }}>
+          <Button
+            onClick={handleGenerateRoute}
+            disabled={!props.source || !props.destination}
+            color="primary"
+          >
+            Generate Route
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };

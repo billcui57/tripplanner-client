@@ -67,18 +67,5 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
       </List>
     );
   };
-  return (
-    <div>
-      <Typography
-        variant="h4"
-        textAlign={"center"}
-        marginBottom={2}
-        marginTop={8}
-        sx={{ color: "#264653" }}
-      >
-        Your trip, planned
-      </Typography>
-      {renderDayTrips()}
-    </div>
-  );
+  return renderDayTrips();
 };

@@ -1,4 +1,12 @@
-import { Alert, Button, CircularProgress, Container } from "@mui/material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Container,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -15,8 +23,11 @@ import { IPin } from "../../components/Pin/Pin";
 import { ResultList } from "../../components/ResultList/ResultList";
 import { ResultMap } from "../../components/ResultMap/ResultMap";
 import { FAQ } from "../../components/FAQ/FAQ";
+import { Stack } from "@mui/system";
 
 export default function ResultPage() {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const router = useRouter();
   const [sourceLocation, setSourceLocation] =
     useState<IPin | undefined>(undefined);
@@ -108,36 +119,87 @@ export default function ResultPage() {
     );
   }
 
-  return (
-    <React.Fragment>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+  const renderDesktop = () => {
+    return (
+      <React.Fragment>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Button color="primary" size="small" onClick={goToMainPage}>
+              Go Back
+            </Button>
+
+            <Container maxWidth="sm">
+              <Typography
+                variant="h4"
+                textAlign={"center"}
+                marginBottom={2}
+                marginTop={2}
+                sx={{ color: "#264653" }}
+              >
+                Your trip, planned
+              </Typography>
+              <Box sx={{ marginBottom: 8 }}>
+                <ResultList tripData={data} />
+              </Box>
+              <FAQ />
+            </Container>
+          </Grid>
+          <Grid item xs={6}>
+            <ResultMap
+              tripData={data}
+              onMarkerClick={handleMarkerClick}
+              showDirectionCreator
+              directionCreatorSource={sourceLocation}
+              directionCreatordestination={destLocation}
+            />
+          </Grid>
+        </Grid>
+
+        <DirectionTypeSelectModal
+          open={directionTypeSelectModalOpen}
+          onClose={handleModalClose}
+        ></DirectionTypeSelectModal>
+      </React.Fragment>
+    );
+  };
+
+  const renderMobile = () => {
+    return (
+      <Stack spacing={4} marginTop={4}>
+        <Container maxWidth="sm">
           <Button color="primary" size="small" onClick={goToMainPage}>
             Go Back
           </Button>
-
+          <Typography
+            variant="h4"
+            textAlign={"center"}
+            marginBottom={2}
+            marginTop={2}
+            sx={{ color: "#264653" }}
+          >
+            Your trip, planned
+          </Typography>
+          <ResultList tripData={data} />
+        </Container>
+        <ResultMap
+          tripData={data}
+          onMarkerClick={handleMarkerClick}
+          showDirectionCreator
+          directionCreatorSource={sourceLocation}
+          directionCreatordestination={destLocation}
+        />
+        <DirectionTypeSelectModal
+          open={directionTypeSelectModalOpen}
+          onClose={handleModalClose}
+        ></DirectionTypeSelectModal>
+        <Box textAlign="center">
           <Container maxWidth="sm">
-            <Box sx={{ marginBottom: 8 }}>
-              <ResultList tripData={data} />
-            </Box>
             <FAQ />
           </Container>
-        </Grid>
-        <Grid item xs={6}>
-          <Box sx={{ position: "absolute", top: 10, right: 64, zIndex: 999 }}>
-            <DirectionCreator
-              source={sourceLocation}
-              destination={destLocation}
-            />
-          </Box>
-          <ResultMap tripData={data} onMarkerClick={handleMarkerClick} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Stack>
+    );
+  };
 
-      <DirectionTypeSelectModal
-        open={directionTypeSelectModalOpen}
-        onClose={handleModalClose}
-      ></DirectionTypeSelectModal>
-    </React.Fragment>
-  );
+  return isDesktop ? renderDesktop() : renderMobile();
 }
