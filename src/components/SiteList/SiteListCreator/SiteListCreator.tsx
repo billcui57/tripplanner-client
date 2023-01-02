@@ -60,7 +60,7 @@ export const SiteListCreatorV2: React.FC<IProps> = ({ onChange, sites }) => {
     setCurSite({ location: { latitude: value.lat, longitude: value.lng } });
   };
 
-  const handleAddSiteButtonClick = () => {
+  const handleAddSiteButtonClick = (e: React.MouseEvent) => {
     if (!curSite) {
       return;
     }

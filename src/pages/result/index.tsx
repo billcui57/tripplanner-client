@@ -107,14 +107,17 @@ export default function ResultPage() {
   if (isLoading || !data) {
     return (
       <React.Fragment>
-        <CircularProgress
+        <Box
           sx={{
             position: "fixed",
-            top: "47%",
-            left: "49%",
+            top: "50%",
+            left: "50%",
             color: "#2A9D8F",
+            transform: "translate(-50%, -50%)",
           }}
-        />
+        >
+          <CircularProgress />
+        </Box>
       </React.Fragment>
     );
   }
