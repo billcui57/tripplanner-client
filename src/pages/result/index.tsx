@@ -54,9 +54,11 @@ export default function ResultPage() {
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!router.query.data && !!planTripRequest,
+    staleTime: Infinity,
+    cacheTime: Infinity,
     onError: (err) => {
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data.error);
+        setError(err.response?.data);
       }
     },
   });
