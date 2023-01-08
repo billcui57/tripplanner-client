@@ -16,6 +16,7 @@ import { SiteListCreatorV2 } from "../components/SiteList/SiteListCreator/SiteLi
 import { ISite } from "../types";
 import { FAQ } from "../components/FAQ/FAQ";
 import { Stack } from "@mui/system";
+import { hoursToSeconds, secondsToHours } from "../utils";
 
 export default function Home() {
   let planTripRequest: IPlanTripRequest | undefined = undefined;
@@ -43,7 +44,7 @@ export default function Home() {
   const syncURLWithRequest = () => {
     planTripRequest = {
       sites: sites,
-      max_driving_hours: maxDrivingHours,
+      max_driving_seconds: hoursToSeconds(maxDrivingHours),
       hotel_finding_radius: hotelFindingRadius,
     };
     router.replace({
@@ -60,7 +61,7 @@ export default function Home() {
     }
     const planTripRequest: IPlanTripRequest = JSON.parse(queryData);
     setSites(planTripRequest.sites);
-    setMaxDrivingHours(planTripRequest.max_driving_hours);
+    setMaxDrivingHours(secondsToHours(planTripRequest.max_driving_seconds));
     setHotelFindingRadius(planTripRequest.hotel_finding_radius);
     setUrlLoaded(true);
   };
@@ -72,7 +73,7 @@ export default function Home() {
   const handleSubmitButtonClick = () => {
     planTripRequest = {
       sites: sites,
-      max_driving_hours: maxDrivingHours,
+      max_driving_seconds: hoursToSeconds(maxDrivingHours),
       hotel_finding_radius: hotelFindingRadius,
     };
 

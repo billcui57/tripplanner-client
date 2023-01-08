@@ -5,14 +5,13 @@ import {
   AccordionSummary,
   Card,
   CardContent,
-  Container,
   List,
   ListItem,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { IPlanTripResponse } from "../../service/plantrip";
-import { formatDecimalTime } from "../../utils";
+import { formatSecondTime } from "../../utils";
 
 interface IProps {
   tripData: IPlanTripResponse | undefined;
@@ -42,8 +41,8 @@ export const ResultList: React.FC<IProps> = ({ tripData }: IProps) => {
                   <Typography variant="h6" sx={{ color: "#2A9D8F" }}>{`Day ${
                     i + 1
                   }`}</Typography>
-                  <Typography variant="body1">{`Drive ${formatDecimalTime(
-                    dayDrive.day_drive.duration_in_hours
+                  <Typography variant="body1">{`Drive ${formatSecondTime(
+                    dayDrive.day_drive.duration_in_seconds
                   )}`}</Typography>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>

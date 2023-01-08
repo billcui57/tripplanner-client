@@ -3,7 +3,7 @@ import { IGeoCode, IHotel, ISite } from "../types";
 import { buildUrl } from "./util";
 
 export interface IDayDrive {
-  duration_in_hours: number;
+  duration_in_seconds: number;
   start_location: IGeoCode;
   end_location: IGeoCode;
   distance_in_meters: number;
@@ -14,16 +14,20 @@ export interface IDayDriveWithHotel {
   hotels: IHotel[];
 }
 
+export interface ILeanRoute {
+  path: IGeoCode[]
+}
+
 export interface IPlanTripRequest {
   sites: ISite[];
-  max_driving_hours: number;
+  max_driving_seconds: number;
   hotel_finding_radius: number;
 }
 
 export interface IPlanTripResponse {
   day_drive_with_hotels: IDayDriveWithHotel[];
   sites: ISite[]
-  route_polyline: IGeoCode[]
+  lean_route: ILeanRoute
 }
 
 export default async function planTrip(planTripRequest: IPlanTripRequest) {
