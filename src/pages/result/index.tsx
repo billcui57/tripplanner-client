@@ -9,21 +9,20 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { Stack } from "@mui/system";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import planTrip, { IPlanTripRequest } from "../../service/plantrip";
-import { DirectionCreator } from "../../components/DirectionCreator.tsx/DirectionCreator";
 import {
   DirectionTypeSelectModal,
   IDirectionType,
 } from "../../components/DirectionCreator.tsx/DirectionTypeSelectModal";
+import { FAQ } from "../../components/FAQ/FAQ";
 import { IPin } from "../../components/Pin/Pin";
 import { ResultList } from "../../components/ResultList/ResultList";
 import { ResultMap } from "../../components/ResultMap/ResultMap";
-import { FAQ } from "../../components/FAQ/FAQ";
-import { Stack } from "@mui/system";
+import planTrip, { IPlanTripRequest } from "../../service/plantrip";
 
 export default function ResultPage() {
   const theme = useTheme();
@@ -72,6 +71,18 @@ export default function ResultPage() {
   };
 
   const handleMarkerClick = (pin: IPin) => {
+    if (pin.type == "cluster") {
+      alert(
+        "You've clicked on a hotel cluster, please zoom in and click on an actual hotel"
+      );
+      return;
+    }
+
+    if (!["hotel", "site"].includes(pin.type)) {
+      alert("Please click on either a site or a hotel");
+      return;
+    }
+
     setSelectedPin(pin);
     setDirectionTypeSelectModalOpen(true);
   };

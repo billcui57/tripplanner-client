@@ -2,7 +2,7 @@ import EastIcon from "@mui/icons-material/East";
 import HotelIcon from "@mui/icons-material/Hotel";
 import PlaceIcon from "@mui/icons-material/Place";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import { Avatar, Box, Button } from "@mui/material";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import React from "react";
@@ -61,6 +61,12 @@ export const DirectionCreator: React.FC<IProps> = (props: IProps) => {
           <EastIcon />
           {renderPoint(props.destination)}
         </Stack>
+        <Typography
+          variant="body1"
+          sx={{ color: "#2A9D8F", textAlign: "center" }}
+        >
+          Click on a pin
+        </Typography>
         <Box sx={{ textAlign: "center" }}>
           <Button
             onClick={handleGenerateRoute}

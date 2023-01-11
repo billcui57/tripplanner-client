@@ -68,6 +68,10 @@ export const ResultMap: React.FC<IProps> = ({
         dayCount,
       } = cluster.properties;
       if (isCluster) {
+        const pin: IPin = {
+          geocode: { latitude: latitude, longitude: longitude },
+          type: "cluster",
+        };
         return (
           <Pin
             lat={latitude}
@@ -76,6 +80,9 @@ export const ResultMap: React.FC<IProps> = ({
             type="cluster"
             key={`hotel-marker-${i}`}
             hoverText={`${pointCount} hotels`}
+            onClick={() => {
+              onMarkerClick(pin);
+            }}
           >
             <Typography variant="caption">{pointCount}</Typography>
             <HotelIcon fontSize="small" />
@@ -118,6 +125,9 @@ export const ResultMap: React.FC<IProps> = ({
           {...pin}
           key={`end-of-day-marker-${i}`}
           hoverText={`Area to rest after day ${i + 1}`}
+          onClick={() => {
+            onMarkerClick(pin);
+          }}
         >
           <Typography variant="caption">Night {i + 1}</Typography>
         </Pin>

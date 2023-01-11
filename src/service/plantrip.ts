@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IGeoCode, IHotel, ISite } from "../types";
+import { planTripResponseMock } from "./mock";
 import { buildUrl } from "./util";
 
 export interface IDayDrive {

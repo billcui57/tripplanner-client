@@ -1,9 +1,10 @@
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import ReactPlayer from "react-player";
 
 export const FAQ: React.FC = () => {
   return (
@@ -27,6 +28,20 @@ export const FAQ: React.FC = () => {
             entire trip, as well as providing nice-to-haves such as exporting
             routes into Google Maps.
           </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ color: "#264653" }}>
+            How do I use this tool?
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Watch this walkthrough!</Typography>
+          <ReactPlayer
+            url={"https://youtu.be/6tyOEhhYcQk"}
+            width="350px"
+          ></ReactPlayer>
         </AccordionDetails>
       </Accordion>
       <Accordion>
